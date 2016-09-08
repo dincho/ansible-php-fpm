@@ -1,7 +1,12 @@
 ---
 
 - name: Add the OS specific varibles
-  include_vars: "{{ ansible_os_family }}.yml"
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+  tags: [vars,php,fpm]
 
 - name: Install the php packages (APT)
   apt: >
@@ -104,6 +109,6 @@
   changed_when: "result.rc != 0"
   tags: [configuration,php,fpm]
 
-- name: Start the php5-fpm service
+- name: Start the php-fpm service
   service: name={{ php_fpm_service_name }} state=started enabled=yes
   tags: [service,php,fpm]
