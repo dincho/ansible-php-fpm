@@ -1,4 +1,5 @@
-[![Build Status](http://img.shields.io/travis/NBZ4live/ansible-php-fpm.svg?style=flat)](https://travis-ci.org/NBZ4live/ansible-php-fpm) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-php--fpm-blue.svg?style=flat)](https://galaxy.ansible.com/list#/roles/304)
+[![Build Status](https://travis-ci.org/dincho/ansible-php-fpm.svg?branch=master)](https://travis-ci.org/dincho/ansible-php-fpm)
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-published-blue.svg)](https://galaxy.ansible.com/dincho/php-fpm/)
 
 php-fpm
 ========
@@ -8,7 +9,7 @@ This role installs and configures the php-fpm interpreter.
 Requirements
 ------------
 
-This role requires Ansible 1.4 or higher and tested platforms are listed in the metadata file.
+This role requires Ansible 1.8 or higher and tested platforms are listed in the metadata file.
 
 Role Variables
 --------------
@@ -23,7 +24,7 @@ The role uses the following variables:
  - **php_fpm_pool_defaults**: A list of default directives used for all php-fpm pools
    (see http://php.net/manual/en/install.fpm.configuration.php).
  - **php_fpm_apt_packages**: The list of packages to be installed by the
-  ```apt``` module, defaults to ```[php5-fpm]```.
+  ```apt``` module, defaults to ```[php-fpm]```.
    module.
  - **php_fpm_yum_packages**: The list of packages to be installed by the
    ```yum``` module, defaults to ```[php-fpm]```.
@@ -98,9 +99,9 @@ Example usage
     # file: task.yml
     - hosts: all
       roles:
-        - nbz4live.php-fpm
+        - dincho.php-fpm
         - {
-            role: nbz4live.php-fpm,
+            role: dincho.php-fpm,
             php_fpm_pools:[
               {name: foo, user: www-data, group: www-data, listen: 8000, chdir: /}
             ]
@@ -132,3 +133,4 @@ Author Information
 
 - Sergey Fayngold <sergey@faynhost.com>
 - Pierre Buyle <buyle@floedesign.ca>
+- Dincho Todorov
