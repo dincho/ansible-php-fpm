@@ -2,6 +2,8 @@
 language: python
 python: "2.7"
 
+dist: bionic
+
 env:
   - ANSIBLE_VERSION=latest
   - ANSIBLE_VERSION=1.9.0.1
@@ -23,11 +25,18 @@ script:
   - ansible-playbook -i localhost, --connection=local tests/play.yml --syntax-check
 
   # Run the role/playbook with ansible-playbook.
-  - ansible-playbook -i localhost, --connection=local --sudo tests/play.yml -vvvv
-
+  - if [ "$ANSIBLE_VERSION" = "1.8" ]; then
+      ansible-playbook -i localhost, --connection=local --sudo tests/play.yml -vvvv;
+    else
+      ansible-playbook -i localhost, --connection=local -b tests/play.yml -vvvv;
+    fi
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-    ansible-playbook -i localhost, --connection=local --sudo tests/play.yml 
+    if [ "$ANSIBLE_VERSION" = "1.8" ]; then
+      ansible-playbook -i localhost, --connection=local -sudo tests/play.yml;
+    else
+      ansible-playbook -i localhost, --connection=local -b tests/play.yml;
+    fi
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
